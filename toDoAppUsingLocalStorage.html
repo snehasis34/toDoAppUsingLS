@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>TO Do App</title>
+</head>
+<body>
+    <h1>TASK LIST</h1>
+    <P>Add task to your list by trying to the right and pressing enter.You may then view pending tasks below.</P>
+    <div id="inputdiv">
+        <input type="text" id="input" placeholder="Write something.."/>
+        <button id="btn">Submit</button>
+    </div><br>
+    <div id="outdiv"></div>
+    <div id="rename"></div>
+    
+   <script>    
+let inputtask=document.getElementById('input');
+let btn=document.getElementById('btn');
+let outputtask=document.getElementById('outdiv');
+btn.addEventListener('click',()=>{
+    if(inputtask.value!=''){
+        addtask();
+    }
+    else{
+        alert("Add some text here");
+    }
+})
+let numb=89;
+function addtask(){
+    numb++;
+    let tempdiv=document.createElement('div');
+    let showbtn=document.createElement('button');
+    localStorage.setItem(numb,inputtask.value);
+    let lvalue=localStorage.getItem(numb);
+    showbtn.innerText=lvalue;
+    let markbtn=document.createElement('button');
+    markbtn.innerHTML="&check;";
+    let pencilicon=document.createElement('button');
+    pencilicon.setAttribute('class','fa');
+    pencilicon.innerHTML="&#xf040;";
+    let deletebtn=document.createElement('button');
+    deletebtn.innerHTML="&cross;";
+    tempdiv.append(showbtn,markbtn,pencilicon,deletebtn);
+    outputtask.append(tempdiv);
+    markbtn.addEventListener('click',()=>{
+        if(showbtn.value==''){
+            markbtn.style.color="blue";
+        }
+        if(showbtn.style.textDecoration!='line-through'){
+            showbtn.style.textDecoration='line-through';
+        }
+        else {
+            showbtn.style.textDecoration='none';
+        }
+    })
+    pencilicon.addEventListener('click',()=>{
+        let rename1=document.getElementById('rename');
+        let tempdiv=document.createElement('div');
+        let tempinput=document.createElement('input');
+        tempinput.setAttribute('type','text');
+        tempinput.value=lvalue;
+        let tempbutton=document.createElement('button');
+        tempbutton.innerHTML='submit';
+        tempdiv.append(tempinput,tempbutton);
+        rename1.append(tempdiv);
+
+        tempbutton.addEventListener('click',(e)=>{
+            showbtn.innerText=tempinput.value;
+            localStorage.setItem(numb,showbtn.innerText);
+            
+            e.target.parentElement.remove();
+        })
+    })
+    deletebtn.addEventListener('click',(e)=>{
+        e.target.parentElement.remove();
+        let content=localStorage.getItem(numb);
+        localStorage.removeItem(numb);
+        numb--;
+    }) 
+   showbtn.style.margin="10px";
+}
+    </script>
+</body>
+</html>
